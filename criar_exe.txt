@@ -1,0 +1,32 @@
+Comandos usados no cmd para criar o executável: 
+
+1. Criar o Ambiente Virtual com Python 3.12:
+
+   bash
+   py -3.12 -m venv venv312
+   
+
+2. Ativar o Ambiente Virtual (no Windows):
+
+   bash
+   venv312\Scripts\activate
+   
+
+3. Instalar as Dependências no Ambiente Virtual:
+
+   bash
+   pip install pyinstaller pygame
+   
+
+4. **(Opcional) Testar o Tkinter para Certificar que Está Funcionando:**
+
+   ```bash
+   py -3.12 -m tkinter
+   ```
+
+5. Gerar o Executável com o PyInstaller:
+
+   O comando utilizado (em uma única linha no prompt do Windows) foi:
+
+   bash
+  pyinstaller --onefile --windowed --hidden-import=BancoDeDados --hidden-import=tkinter --hidden-import=_tkinter --hidden-import=pygame.mixer --collect-all tkinter --add-data "C:\Users\barba\AppData\Local\Programs\Python\Python312\tcl\tcl8.6;_tcl_data" --add-data "C:\Users\barba\AppData\Local\Programs\Python\Python312\tcl\tk8.6;_tk_data" --add-data "C:\Users\barba\Desktop\Universidade Aberta\Programacao por objetos\2003471EfolioGlobal\QQQuizz\Quiz_package\logo2.png;." --add-data "C:\Users\barba\Desktop\Universidade Aberta\Programacao por objetos\2003471EfolioGlobal\QQQuizz\Quiz_package\bdQuiz.db;." --add-data "C:\Users\barba\Desktop\Universidade Aberta\Programacao por objetos\2003471EfolioGlobal\QQQuizz\Quiz_package\musica_instrumental.mp3;." --add-binary "C:\Users\barba\AppData\Local\Programs\Python\Python312\DLLs\_tkinter.pyd;." App.py
