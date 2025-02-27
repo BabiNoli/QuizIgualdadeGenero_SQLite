@@ -1,0 +1,73 @@
+import sqlite3
+
+# Conectando ao banco (se não existir, ele será criado)
+conn = sqlite3.connect('bdQuiz.db')
+cursor = conn.cursor()
+
+# Habilita o uso de foreign keys no SQLite
+cursor.execute("PRAGMA foreign_keys = ON;")
+
+# Criação da tabela tipo_pergunta (deve ser criada primeiro, pois é referenciada por outras)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS tipo_pergunta (
+    id_tipo INTEGER PRIMARY KEY,
+    descricao TEXT
+);
+""")
+
+# Criação da tabela perguntas
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS perguntas (
+    id_pergunta INTEGER PRIMARY KEY,
+    texto_pergunta TEXT,
+    texto_pergunta_ingles TEXT NOT NULL,
+    texto_pergunta_alemao TEXT NOT NULL,
+    tipo_pergunta INTEGER,
+    FOREIGN KEY (tipo_pergunta) REFERENCES tipo_pergunta(id_tipo)
+);
+""")
+
+# Criação da tabela resposta_multipla (chave primária composta)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS resposta_multipla (
+    id_resposta INTEGER NOT NULL,
+    texto_resposta TEXT,
+    texto_resposta_ingles TEXT NOT NULL,
+    texto_resposta_alemao TEXT NOT NULL,
+    peso INTEGER NOT NULL,
+    Perguntas_id_pergunta INTEGER NOT NULL,
+    PRIMARY KEY (id_resposta, Perguntas_id_pergunta),
+    FOREIGN KEY (Perguntas_id_pergunta) REFERENCES perguntas(id_pergunta)
+);
+""")
+
+# Criação da tabela usuario
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS usuario (
+    id INTEGER PRIMARY KEY,
+    nome TEXT NOT NULL,
+    idade INTEGER NOT NULL,
+    genero INTEGER NOT NULL,
+    pin INTEGER NOT NULL,
+    pont_max REAL,
+    pont_atual REAL
+);
+""")
+
+# Criação da tabela verdadeiro_falso (chave primária composta)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS verdadeiro_falso (
+    id_resposta_boolean INTEGER NOT NULL,
+    texto_resposta TEXT,
+    texto_resposta_ingles TEXT NOT NULL,
+    texto_resposta_alemao TEXT NOT NULL,
+    peso INTEGER NOT NULL,
+    Perguntas_id_pergunta INTEGER NOT NULL,
+    PRIMARY KEY (id_resposta_boolean, Perguntas_id_pergunta),
+    FOREIGN KEY (Perguntas_id_pergunta) REFERENCES perguntas(id_pergunta)
+);
+""")
+
+conn.commit()
+conn.close()
+print("Estrutura do banco de dados criada com sucesso!")
